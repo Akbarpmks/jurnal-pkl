@@ -398,6 +398,8 @@
 
         @endif
 
+        </div>
+
     </div>
 
 </div>

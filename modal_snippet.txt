@@ -1,0 +1,138 @@
+<div
+    class="modal fade"
+    id="dokumentasiModal"
+    tabindex="-1"
+    aria-labelledby="dokumentasiModalLabel"
+    aria-hidden="true"
+>
+
+    <div
+        class="modal-dialog modal-dialog-centered modal-xl"
+    >
+
+        <div
+            class="modal-content border-0 shadow"
+            style="
+                border-radius:18px;
+                overflow:hidden;
+            "
+        >
+
+            {{-- =========================
+                 HEADER MODAL
+            ========================= --}}
+
+            <div class="modal-header">
+
+                <h5
+                    class="modal-title fw-bold"
+                    id="dokumentasiModalLabel"
+                >
+
+                    <i class="bi bi-image me-2"></i>
+
+                    Dokumentasi Kegiatan
+
+                </h5>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+
+            {{-- =========================
+                 BODY MODAL
+            ========================= --}}
+
+            <div
+                class="modal-body text-center"
+                style="
+                    background:#f8f9fa;
+                    padding:20px;
+                "
+            >
+
+                <img
+                    id="dokumentasiPreview"
+                    src=""
+                    alt="Dokumentasi kegiatan"
+                    class="img-fluid rounded shadow-sm"
+                    style="
+                        max-height:75vh;
+                        max-width:100%;
+                        width:auto;
+                        object-fit:contain;
+                    "
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+{{-- =====================================================
+     SCRIPT MODAL
+===================================================== --}}
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const dokumentasiModal =
+        document.getElementById('dokumentasiModal');
+
+    const dokumentasiPreview =
+        document.getElementById('dokumentasiPreview');
+
+
+    if (!dokumentasiModal || !dokumentasiPreview) {
+        return;
+    }
+
+
+    // Saat modal dibuka
+
+    dokumentasiModal.addEventListener(
+        'show.bs.modal',
+        function (event) {
+
+            const button = event.relatedTarget;
+
+            if (!button) {
+                return;
+            }
+
+            const imageUrl =
+                button.getAttribute('data-image');
+
+            dokumentasiPreview.src = imageUrl;
+
+        }
+    );
+
+
+    // Saat modal ditutup
+
+    dokumentasiModal.addEventListener(
+        'hidden.bs.modal',
+        function () {
+
+            dokumentasiPreview.src = '';
+
+        }
+    );
+
+});
+
+</script>

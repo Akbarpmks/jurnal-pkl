@@ -5,8 +5,9 @@ namespace App\Exports;
 use App\Models\Journal;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class JournalExport implements FromCollection, WithHeadings
+class JournalExport implements FromCollection, WithHeadings, WithMapping
 {
     protected $userId;
 
@@ -24,6 +25,7 @@ class JournalExport implements FromCollection, WithHeadings
                 'hari',
                 'unit_kerja',
                 'catatan',
+                'dokumentasi',
             ]);
     }
 
@@ -34,6 +36,34 @@ class JournalExport implements FromCollection, WithHeadings
             'Hari',
             'Unit Kerja',
             'Catatan',
+            'Dokumentasi',
+        ];
+    }
+
+    public function map($journal): array
+    {
+        $dokumentasi = '-';
+
+        if (!empty($journal->dokumentasi)) {
+            $dokumentasi = 'Ada (' . basename($journal->dokumentasi) . ')';
+        }
+
+        $tanggal = '-';
+
+        if (!empty($journal->tanggal)) {
+            try {
+                $tanggal = \Carbon\Carbon::parse($journal->tanggal)->format('d-m-Y');
+            } catch (\Throwable $e) {
+                $tanggal = $journal->tanggal;
+            }
+        }
+
+        return [
+            $tanggal,
+            $journal->hari ?? '-',
+            $journal->unit_kerja ?? '-',
+            $journal->catatan ?? '-',
+            $dokumentasi,
         ];
     }
 }

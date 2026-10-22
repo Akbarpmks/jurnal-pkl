@@ -234,28 +234,33 @@ class ExportController extends Controller
 
         $table->addRow();
 
-        $table->addCell(600)->addText(
+        $table->addCell(500)->addText(
             'No',
             ['bold' => true]
         );
 
-        $table->addCell(1500)->addText(
+        $table->addCell(1300)->addText(
             'Tanggal',
             ['bold' => true]
         );
 
-        $table->addCell(1200)->addText(
+        $table->addCell(1100)->addText(
             'Hari',
             ['bold' => true]
         );
 
-        $table->addCell(3000)->addText(
+        $table->addCell(2500)->addText(
             'Unit Kerja',
             ['bold' => true]
         );
 
-        $table->addCell(3000)->addText(
+        $table->addCell(2500)->addText(
             'Catatan',
+            ['bold' => true]
+        );
+
+        $table->addCell(2000)->addText(
+            'Dokumentasi',
             ['bold' => true]
         );
 
@@ -275,7 +280,7 @@ class ExportController extends Controller
             |--------------------------------------------------------------------------
             */
 
-            $table->addCell(600)->addText(
+            $table->addCell(500)->addText(
                 $this->cleanText($index + 1)
             );
 
@@ -297,7 +302,7 @@ class ExportController extends Controller
                 }
             }
 
-            $table->addCell(1500)->addText(
+            $table->addCell(1300)->addText(
                 $this->cleanText($tanggal)
             );
 
@@ -307,7 +312,7 @@ class ExportController extends Controller
             |--------------------------------------------------------------------------
             */
 
-            $table->addCell(1200)->addText(
+            $table->addCell(1100)->addText(
                 $this->cleanText($journal->hari)
             );
 
@@ -317,7 +322,7 @@ class ExportController extends Controller
             |--------------------------------------------------------------------------
             */
 
-            $table->addCell(3000)->addText(
+            $table->addCell(2500)->addText(
                 $this->cleanText($journal->unit_kerja)
             );
 
@@ -327,9 +332,37 @@ class ExportController extends Controller
             |--------------------------------------------------------------------------
             */
 
-            $table->addCell(3000)->addText(
+            $table->addCell(2500)->addText(
                 $this->cleanText($journal->catatan)
             );
+
+            /*
+            |--------------------------------------------------------------------------
+            | Dokumentasi
+            |--------------------------------------------------------------------------
+            */
+
+            $dokumentasiCell = $table->addCell(2000);
+
+            if (!empty($journal->dokumentasi)) {
+                $dokumentasiPath = storage_path('app/public/' . ltrim($journal->dokumentasi, '/'));
+
+                if (file_exists($dokumentasiPath)) {
+                    try {
+                        $dokumentasiCell->addImage($dokumentasiPath, [
+                            'width' => 80,
+                            'height' => 80,
+                            'wrappingStyle' => 'inline',
+                        ]);
+                    } catch (\Throwable $e) {
+                        $dokumentasiCell->addText($this->cleanText('Ada'));
+                    }
+                } else {
+                    $dokumentasiCell->addText($this->cleanText('Ada'));
+                }
+            } else {
+                $dokumentasiCell->addText($this->cleanText('-'));
+            }
         }
 
         /*
